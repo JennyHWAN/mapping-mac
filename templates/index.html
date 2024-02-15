@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- <script src="./static/mywebscript.js"></script> -->
+    <style>
+        .center-heading {
+            text-align: center;
+        }
+
+        /* li:hover a {
+            background: blue;
+        } */
+
+        .dropdown:hover>.dropdown-menu {
+        display: block;
+        margin-right: 20px !important;
+        left: -100;
+        }
+
+        .dropdown>.dropdown-toggle:active {
+        /*Without this, clicking will make it sticky*/
+            pointer-events: none;
+        }
+
+    </style>
+
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                  <a class="navbar-brand" href="{{ url_for('render_index_page') }}">Home</a>
+            </div>
+            
+            <!-- <div class="navbar-header">
+            <div class="dropdown">
+                <button class="dropbtn">©Jenny YJ Huang</button>
+                <divn class="dropdown-content">contact</div>
+            </div>
+            </div> -->
+            <!-- <ul class="nav navbar-nav navbar-right">  -->
+
+                <!-- refer : https://mdbootstrap.com/docs/standard/extended/dropdown-hover/ -->
+            <div class="dropdown">
+                <button
+                  class="btn dropdown-toggle"
+                  type="button"
+                  id="dropdownMenuButton"
+                  data-mdb-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                ©Jenny YJ Huang
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item">Email: Jenny.YJ.Huang@cn.ey.com</a></li>
+                  <li><a class="dropdown-item">Zoom: Jenny Huang</a></li>
+                </ul>
+              </div>
+            <!-- </ul> -->
+
+
+            <!-- <ul class="nav navbar-nav navbar-right"> -->
+                <!-- <li> -->
+                    <!-- <a class="btn btn-link" href="index.html"></a> -->
+                    <!-- <a class="myDIV">Logout</a> -->
+                    <!-- <div class="myDIV">Hover over me.</div> -->
+                    <!-- <a class="hide">I am shown when someone hovers over the div above.</a> -->
+                    <!-- <div class="container">click</div> -->
+                    <!-- <div class="change">change</div> -->
+                    <!-- <a class="btn">©Jenny YJ Huang</a> -->
+                <!-- </li> -->
+            <!-- </ul> -->
+        </div>
+    </nav>
+
+    <!-- <div class="card"> -->
+        <br />
+        <br />
+	<h1 class="center-heading" style="padding-top: 3%;">Mapping Function</h1>
+        <div style="padding: 25px 25px 25px 25px;">
+        <div class="card-body">
+            <div class="mb-3">
+                <h3>Instrction:</h3>
+                <div>
+                This is especially for SOC projects
+                Mapping from table A to table B, 
+                expample of upload files are at the "Example of upload files" section. Feel free to reach out if you have any question or comment!<br />
+                <div style="color: red; font-weight: bold; padding-top: 2%;">
+                    PLEASE NOTE: 
+                </div>
+                    <div>Upload files' <b>FIELD</b> and file <b>NAMES</b> must be exactly the same as those in the example's template!!!</div>
+
+                <!-- <a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a><br /> -->
+                </div>
+
+                <!-- <label class="form-label">Please upload table A and Table B</label> -->
+                <hr />
+                <br />
+                <div>
+                    <h3>Not sorted</h3>
+                    Please upload table A and Table B <br />
+                    This function is to convert "control to criteria" in table B to "criteria to control" in table A.
+                </div>
+                <!-- <input type="number" class="form-control" id="num1"> -->
+                <br />
+
+                <form class="" action="upload" method="POST" enctype="multipart/form-data">
+                    <!-- <input type="file" name="upload-file" value=""> -->
+                    <input type="file" id="file" name="file">
+                    <!-- <input type="submit" name="" value="Submit"> -->
+                    <button>Upload</button>
+                </form>
+
+                <hr />
+                <div>
+                    <h3>Sorted</h3>
+                    Please upload table A and Table B <br />
+                    This function is to convert "control to criteria" in table B to "criteria to control" in table A and sort the "Criteria" of the output.
+                </div>
+                <!-- <input type="number" class="form-control" id="num1"> -->
+                <br /> 
+                <form class="" action="sort" method="POST" enctype="multipart/form-data">
+                    <!-- <input type="file" name="upload-file" value=""> -->
+                    <input type="file" id="file" name="file">
+                    <!-- <input type="submit" name="" value="Submit"> -->
+                    <button>Upload</button>
+                </form>
+
+
+            </div>
+            <br />
+            <br />
+        </div>
+            <!-- <div class="mb-3">
+                <label class="form-label">Number 2</label>
+                <input type="number" class="form-control" id="num2">
+            </div> -->
+    
+            <!-- <div style="padding: 25px;">
+                <button onclick="runAddition()" class="btn btn-secondary">Add</button>
+                <button onclick="runSubtraction()" class="btn btn-secondary">Subtract</button>
+                <button onclick="runMultiplication()" class="btn btn-secondary">Multiply</button>
+            </div> -->
+    <hr />
+    <h1 class="center-heading">Uploaded file(s)</h1> 
+    <div style="text-align: center;">
+    {% if uploaded %}
+    {% for filename in uploaded %}
+    <a href="{{ url_for('upload_files', upload_name=filename) }}">{{ filename }}</a><br /> 
+    {% endfor %}
+    {% endif %}
+    </div>
+    <br />
+
+    <hr />
+	<h1 class="center-heading">Example of upload files</h1> 
+    <!-- {% if files %} -->
+    <div style="text-align: center;">
+    {% for name in files %}
+    {% if name.endswith('.xlsx') %}
+    <a href="{{ url_for('default_file', name=name) }}">{{ name }}</a><br />
+    {% endif %}
+    {% endfor %}
+    </div>
+    <!-- {% endif %} -->
+            <!-- <div style="padding: 25px 25px 25px 25px;">
+    
+            <div id="system_response" style="padding: 25px;"></div>
+        </div> -->
+        <hr />
+    <h1 class="center-heading">Result - Click for download</h1> 
+    <div style="text-align: center;">
+    {% if download %}
+    {% for filename in download %}
+    <a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a><br />
+    {% endfor %}
+    {% endif %}
+    </div>
+    <form action="delete" method="GET" style="text-align: center;">
+        <br />
+        <button>Delete Result History</button>
+    </form>
+    <!-- <a href="{{ url_for('delete_result') }}">Delete Result</a>
+    <br />  -->
+    
+</body>
+</html>
