@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import pandas as pd
 # Import the Maths package here
 # import webview
@@ -18,6 +18,7 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 app = Flask("Mapping")
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 # window = webview.create_window('Mapping', app)
 
 @app.route("/", methods = ['GET', 'POST'])
@@ -46,6 +47,8 @@ def upload():
     # subprocess.call('script.sh')
     if request.method == 'POST':
         file = request.files['file']
+        if file.filename != 'Table_A.xlsx' or file.filename != 'Table_B.xlsx':
+            return render_template('500.html')
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             # new_filename = f'{filename.split(".")[0]}_{str(datetime.now())}.xlsx'
@@ -69,6 +72,10 @@ def upload():
     
     # files1 = os.listdir('example')
     return render_template('index.html', uploaded=os.listdir('input'), files = os.listdir(os.getcwd() + '/example'), download=os.listdir('output'))
+
+# @app.route('/500')
+# def error_handle():
+#     return render_template('500.html')
 
 @app.route('/upload/<upload_name>')
 def upload_files(upload_name):
